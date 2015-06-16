@@ -39,6 +39,7 @@ function generateInvoiceScanLine() {
 	//Invoice Internal ID
 	invoice = nlapiGetFieldValue( 'id' );
 	
+	//The BDN's scanline has five components: An account, three possible amounts to pay and an extra field, generally used for invoice number
 	//Create our scanline! Cast all the things to strings!
 				//Account					//Total 1				//Total 2	//Total 3	//Unused		
 	scanline = bdnPad( customer + '', 7, '0' ) + bdnPad( total.replace( /[^0-9]/g, '' ) + '', 7, '0' ) + '0000000' + '0000000' + bdnPad( invoice + '', 7, '0' ) + '';
