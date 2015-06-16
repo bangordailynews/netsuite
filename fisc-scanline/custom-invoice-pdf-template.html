@@ -1,0 +1,284 @@
+<?xml version="1.0"?><!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+	<!-- Lordy be, there's documentation! http://bfo.com/products/report/docs/tags/ -->
+	<!-- Include the OCR-A Extended font, needed for the scanlines -->
+	<link name="ocraextended" type="font" subtype="opentype" src="http://utils.bangordailynews.com/finance/ocraextended.ttf" />
+	<macrolist>
+		<!-- The header that will appear at the top of every page -->
+		<macro id="nlheader">
+			<table class="header" style="width: 100%;">
+				<tr>
+					<td rowspan="3">
+						<#if companyInformation.logoUrl?length != 0>
+							<img src="http://bangordailynews.com/wp-content/themes/bdn/images/bdn.png" height="75px" width="75px" style="float: left; margin: 0 7px 0 0" />
+						</#if>
+						<span class="nameandaddress">${companyInformation.companyName}</span><br />
+						<span class="nameandaddress">${companyInformation.addressText}</span>
+					</td>
+					<td align="right">
+						<span class="title">${record@title}</span>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">
+						<span class="number">#${record.tranid}</span>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">
+						${record.trandate}
+					</td>
+				</tr>
+			</table>
+		</macro>
+		<!-- The remittance slip template -->
+		<macro id="remittance">
+			<table class="remittance">
+				<tr>
+					<td align="center">
+						<hr />
+						<br />
+						Please return this portion with your payment.
+					</td>
+				</tr>
+			</table>
+			<table class="remittance" style="height:1.65in;">
+				<tr>
+					<td align="left" style="width:25%"><img src="http://bangordailynews.com/wp-content/themes/bdn/images/bdn.png" height="75px" width="75px" /></td>
+					<td style="text-align: center; min-width: 40%;" align="center">
+						<table style="text-align: center; text-transform: uppercase;">
+							<tr><td class="amountenclosed" style="text-align: center;">Amount Enclosed</td></tr>
+							<tr>
+								<td>
+									<table class="numbercellwrapper">
+										<tr>
+											<td>$ </td>
+											<td class="numbercell"> </td>
+											<td class="numbercell"> </td>
+											<td>, </td>
+											<td class="numbercell"> </td>
+											<td class="numbercell"> </td>
+											<td class="numbercell"> </td>
+											<td>. </td>
+											<td class="numbercell"> </td>
+											<td class="numbercell"> </td>
+											<td> </td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+						To pay by credit card, please call 207.990.8246.
+					</td>
+					<td align="right">
+						<table>
+							<tr><td align="left">Account Number:</td><td align="right">${record.entity.id}</td></tr>
+							<tr><td align="left">Invoice Number:</td><td align="right">#${record.tranid}</td></tr>
+							<tr><td align="left">Invoice Date:</td><td align="right">${record.trandate}</td></tr>
+							<tr><td align="left">Date Due:</td><td align="right">${record.duedate}</td></tr>
+							<tr><td align="left">Total Due:</td><td align="right">${record.total}</td></tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<table class="remittance" style="height:.9in;">
+				<tr>
+					<td style="width:.9in;"> </td>
+					<td style="width:4.25in;">${record.billaddress}</td>
+					<td>${companyInformation.companyName}<br />${companyInformation.addressText}</td>
+				</tr>
+			</table>
+			<table class="remittance scanline">
+        <!-- The scanline that we're generating on save. See scanline.js -->
+				<tr><td>${record.custbody_scanline}</td></tr>
+			</table>
+		</macro>
+		<!-- The footer for the rest of the pages -->
+		<macro id="footer">
+			<table class="footer" style="width: 100%;">
+				<tr>
+					<td align="right"><pagenumber/> of <totalpages/></td>
+				</tr>
+			</table>
+		</macro>
+	</macrolist>
+	<!-- We only want to show the remittance slip on the first page. FISC deigns that it must be 3.5in tall -->
+	<!-- On the rest of the pages, just show the normal footer (Page x of xx) -->
+	<style type="text/css">
+		#page1 { footer: remittance; footer-height: 3.5in }
+		#page2,#page3,#page4,#page5,#page6,#page7,#page8,#page9,#page10,#page11,#page12,#page13,#page14,#page15,#page16,#page17,#page18,#page19,#page20,#page21,#page22,#page23,#page24,#page25,#page26,#page27,#page28,#page29,#page30,#page31,#page32,#page33,#page34,#page35,#page36,#page37,#page38,#page39,#page40,#page41,#page42,#page43,#page44,#page45,#page46,#page47,#page48,#page49,#page50,#page51,#page52,#page53,#page54,#page55,#page56,#page57,#page58,#page59,#page60,#page61,#page62,#page63,#page64,#page65,#page66,#page67,#page68,#page69,#page70,#page71,#page72,#page73,#page74,#page75,#page76,#page77,#page78,#page79,#page80,#page81,#page82,#page83,#page84,#page85,#page86,#page87,#page88,#page89,#page90,#page91,#page92,#page93,#page94,#page95,#page96,#page97,#page98,#page99,#page100 {
+			footer: footer; footer-height: 20pt
+		}
+		table.remittance { width: 100%; }
+		table.numbercellwrapper { background-color: #e3e3e3; font-size: 1.2em; }
+		table.numbercellwrapper td {  margin: 4px 2px; }
+		table.numbercellwrapper td.numbercell { background-color: #fff; width: 20px; }
+		table.scanline{ font-family: ocraextended, courier, fix-width; padding: .35in 0 0 0; font-size: 14px; }
+		table {
+			font-family: sans-serif;
+			font-size: 9pt;
+			table-layout: fixed;
+		}
+		th, td.amountenclosed {
+			font-weight: bold;
+			font-size: 8pt;
+			vertical-align: middle;
+			padding: 5px 6px 3px;
+			background-color: #e3e3e3;
+			color: #333333;
+		}
+		td {
+			padding: 4px 6px;
+		}
+		b {
+			font-weight: bold;
+			color: #333333;
+		}
+		table.header td {
+			padding: 0px;
+			font-size: 10pt;
+		}
+		table.footer td {
+			padding: 0px;
+			font-size: 8pt;
+		}
+		table.itemtable th {
+			padding-bottom: 10px;
+			padding-top: 10px;
+		}
+		table.body td {
+			padding-top: 2px;
+		}
+		table.total {
+			page-break-inside: avoid;
+		}
+		tr.totalrow {
+			background-color: #e3e3e3;
+			line-height: 200%;
+		}
+		td.totalboxtop {
+			font-size: 12pt;
+			background-color: #e3e3e3;
+		}
+		td.addressheader {
+			font-size: 8pt;
+			padding-top: 6px;
+			padding-bottom: 2px;
+		}
+		td.address {
+			padding-top: 0px;
+		}
+		td.totalboxmid {
+			font-size: 28pt;
+			padding-top: 20px;
+			background-color: #e3e3e3;
+		}
+		td.totalboxbot {
+			background-color: #e3e3e3;
+			font-weight: bold;
+		}
+		span.title {
+			font-size: 28pt;
+		}
+		span.number {
+			font-size: 16pt;
+		}
+		span.itemname {
+			font-weight: bold;
+			line-height: 150%;
+		}
+		hr {
+			width: 100%;
+			color: #d3d3d3;
+			background-color: #d3d3d3;
+			height: 1px;
+		}
+	</style>
+</head>
+<body header="nlheader" header-height="10%" padding="0.5in 0.5in 0.5in 0.5in" size="Letter">
+	<table style="width: 100%; margin-top: 10px;">
+		<tr>
+			<td class="addressheader" colspan="3"><b>${record.billaddress@label}</b></td>
+			<td class="addressheader" colspan="3"><b>${record.shipaddress@label}</b></td>
+			<td class="totalboxtop" colspan="5"><b>${record.total@label?upper_case}</b></td>
+		</tr>
+		<tr>
+			<td class="address" colspan="3" rowspan="2">${record.billaddress}</td>
+			<td class="address" colspan="3" rowspan="2">${record.shipaddress}</td>
+			<td align="right" class="totalboxmid" colspan="5">${record.total}</td>
+		</tr>
+		<tr>
+			<td align="right" class="totalboxbot" colspan="5"><b>${record.duedate@label}:</b> ${record.duedate}</td>
+		</tr>
+	</table>
+
+	<table class="body" style="width: 100%; margin-top: 10px;">
+		<tr>
+			<th>${record.terms@label}</th>
+			<th>${record.duedate@label}</th>
+			<th>${record.otherrefnum@label}</th>
+			<th>${record.salesrep@label}</th>
+			<th>${record.shipmethod@label}</th>
+			<th>${record.partner@label}</th>
+		</tr>
+		<tr>
+			<td>${record.terms}</td>
+			<td>${record.duedate}</td>
+			<td>${record.otherrefnum}</td>
+			<td>${record.salesrep}</td>
+			<td>${record.shipmethod}</td>
+			<td>${record.partner}</td>
+		</tr>
+	</table>
+
+	<#if record.item?has_content>
+
+		<table class="itemtable" style="width: 100%; margin-top: 10px;">
+			<!-- start items -->
+			<#list record.item as item>
+				<#if item_index==0>
+					<thead>
+						<tr>
+						<th align="center" colspan="3">${item.quantity@label}</th>
+						<th colspan="12">${item.item@label}</th>
+						<th colspan="3">${item.options@label}</th>
+						<th align="right" colspan="4">${item.rate@label}</th>
+						<th align="right" colspan="4">${item.amount@label}</th>
+						</tr>
+					</thead>
+				</#if>
+				<tr>
+					<td align="center" colspan="3" line-height="150%">${item.quantity}</td>
+					<td colspan="12"><span class="itemname">${item.item}</span><br />${item.description}</td>
+					<td colspan="3">${item.options}</td>
+					<td align="right" colspan="4">${item.rate}</td>
+					<td align="right" colspan="4">${item.amount}</td>
+				</tr>
+			</#list>
+			<!-- end items -->
+		</table>
+
+		<hr />
+	</#if>
+
+	<table class="total" style="width: 100%; margin-top: 10px;">
+		<tr>
+			<td colspan="4"> </td>
+			<td align="right"><b>${record.subtotal@label}</b></td>
+			<td align="right">${record.subtotal}</td>
+		</tr>
+		<tr>
+			<td colspan="4"> </td>
+			<td align="right"><b>${record.taxtotal@label} (${record.taxrate}%)</b></td>
+			<td align="right">${record.taxtotal}</td>
+		</tr>
+		<tr class="totalrow">
+			<td background-color="#ffffff" colspan="4"> </td>
+			<td align="right"><b>${record.total@label}</b></td>
+			<td align="right">${record.total}</td>
+		</tr>
+	</table>
+
+</body>
+</pdf>
