@@ -30,12 +30,14 @@ class Bdn_Scanline {
 	
 	function scanline() {
 		
-		//The BDN's scanline has five components: An account, three possible amounts to pay and an extra field, generally used for invoice number
+		//preg_replace to get rid of any non-numeric characters (keep the periods for the money fields!)
+		//number_format on the money fields to force two decimals, but set the thousand and decimal field to ''
+		//str_pad to make each field always the same length
 		$scanline = array(
 			str_pad( preg_replace('/[^0-9]/','', ( !empty( $_GET[ 'account' ] ) ? $_GET[ 'account' ] : '' ) ), 7, '0', STR_PAD_LEFT ),
-			str_pad( preg_replace('/[^0-9]/','', ( !empty( $_GET[ 'amount1' ] ) ? $_GET[ 'amount1' ] : '' ) ), 7, '0', STR_PAD_LEFT ),
-			str_pad( preg_replace('/[^0-9]/','', ( !empty( $_GET[ 'amount2' ] ) ? $_GET[ 'amount3' ] : '' ) ), 7, '0', STR_PAD_LEFT ),
-			str_pad( preg_replace('/[^0-9]/','', ( !empty( $_GET[ 'amount2' ] ) ? $_GET[ 'amount3' ] : '' ) ), 7, '0', STR_PAD_LEFT ),
+			str_pad( number_format( preg_replace('/[^0-9.]/','', ( !empty( $_GET[ 'amount1' ] ) ? $_GET[ 'amount1' ] : '' ) ), 2, '', '' ), 7, '0', STR_PAD_LEFT ),
+			str_pad( number_format( preg_replace('/[^0-9.]/','', ( !empty( $_GET[ 'amount2' ] ) ? $_GET[ 'amount2' ] : '' ) ), 2, '', '' ), 7, '0', STR_PAD_LEFT ),
+			str_pad( number_format( preg_replace('/[^0-9.]/','', ( !empty( $_GET[ 'amount3' ] ) ? $_GET[ 'amount3' ] : '' ) ), 2, '', '' ), 7, '0', STR_PAD_LEFT ),
 			str_pad( preg_replace('/[^0-9]/','', ( !empty( $_GET[ 'extra' ] ) ? $_GET[ 'extra' ] : '' ) ), 7, '0', STR_PAD_LEFT ),
 		);
 		
